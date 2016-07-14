@@ -11,8 +11,6 @@
         1,
         null,
         null,
-        null,
-        null,
         null
       ],
       "/Users/rhuan/RubymineProjects/bookstore-products-services/spec/rails_helper.rb": [
@@ -302,6 +300,6 @@
         null
       ]
     },
-    "timestamp": 1468380401
+    "timestamp": 1468380793
   }
 }
