@@ -6,11 +6,13 @@ class BooksController < ApplicationController
   # GET /books.json
   def index
     @books = Book.all
+#    render :template => "books/index.json.jbuilder"
   end
 
   # GET /books/1
   # GET /books/1.json
   def show
+#   render :template => "books/show.json.jbuilder"
   end
 
   # GET /books/new
