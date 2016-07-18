@@ -12,11 +12,12 @@
 /tmp/*
 !/log/.keep
 
-
-/.idea/*
-/public/*
-/coverage/*
+log/
+.idea/
+public/
+coverage/
 
 
 # Ignore Byebug command history file.
 .byebug_history
+tmp/
