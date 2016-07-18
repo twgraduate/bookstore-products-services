@@ -24,24 +24,35 @@ class BooksController < ApplicationController
 
   # POST /books
   def create
-    @book = Book.create(book_params)
+    @book = Book.new(book_params)
+    if @book.save
+      render :json =>{'msg'=>'book saved!'},status: :created
+    else
+      render :json => @book.errors, status: :unprocessable_entity
+    end
+
   end
 
   # PATCH/PUT /books/1
   def update
-    @book.update(book_params)
+    if @book.update(book_params)
+      render :json =>{'msg'=>'book updated!'},status: :accepted
+    else
+      render :json => @book.errors,status: :unprocessable_entity
+    end
   end
 
   # DELETE /books/1
   # DELETE /books/1.json
   def destroy
     @book.destroy
+    render :json =>{'msg'=>'book destroyed!'},status: :ok
   end
 
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_book
-      @book = Book.find(params[:id])
+    @book = Book.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     render :json =>{'msg'=>'Book not found','code'=>'404'} , :status => 404
   end
