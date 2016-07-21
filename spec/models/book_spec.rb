@@ -1,5 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe Book, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe Book do
+
+  it "returns name error when name is empty " do
+
+  end
+
 end
