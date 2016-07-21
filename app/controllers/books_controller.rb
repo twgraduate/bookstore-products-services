@@ -2,14 +2,17 @@ class BooksController < ApplicationController
 # #
 #   before_action :check_logged_in, only: [:edit, :update, :destroy]
 #   before_action :set_book, only: [:show, :edit, :update, :destroy]
-#
+  def index
+
+  end
 
 
   def create
     begin
-      BooksHelper.add Book.new(params)
+      @book = Book.new(params)
+      BooksHelper.add(@book)
       render :json => { message: 'Create a new book'}, status: 201
-    rescue ArgumentError => e
+    rescue Exception => e
       render :json => { message: e.message}, status: 500
     end
     #
@@ -40,5 +43,6 @@ class BooksController < ApplicationController
   #     username == 'admin' && password =='tw666'
   #   end
   # end
+  #{book=>{name:hda,price:dhaj}}
 
 end

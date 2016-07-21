@@ -10,17 +10,14 @@ class Book < ApplicationRecord
 
 
   def initialize(attributes=nil)
-    @name = attributes[:name]
-    @isbn = attributes[:isbn]
-    @author = attributes[:author]
-    @price = attributes[:price]
-    @img_url = attributes[:img_url]
-    @description = attributes[:description]
-  end
-
-  def error_dect
     raise NameError 'Book name can not be empty' if attributes[:name] == nil
-
+    @name = attributes[:name]
+    # @isbn = attributes[:isbn]
+    # @author = attributes[:author]
+    # @price = attributes[:price]
+    # @img_url = attributes[:img_url]
+    # @description = attributes[:description]
 
   end
+
 end

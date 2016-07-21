@@ -3,7 +3,6 @@ require 'rails_helper'
 describe BooksController do
 
 
-
   describe "POST #create" do
     let(:invalid_params_error_message){ "invalid params" }
     let(:add_book_successful){ "Create a new book" }
