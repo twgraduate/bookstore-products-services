@@ -1,27 +1,18 @@
 class BooksController < ApplicationController
-# #
+
 #   before_action :check_logged_in, only: [:edit, :update, :destroy]
 #   before_action :set_book, only: [:show, :edit, :update, :destroy]
-  def index
-
-  end
 
 
   def create
     begin
-      @book = Book.new(params)
-      BooksHelper.add(@book)
-      render :json => { message: 'Create a new book'}, status: 201
-    rescue Exception => e
-      render :json => { message: e.message}, status: 500
+      @book = Book.new(post_params)
+      if BooksHelper.add(@book)
+        render :json => {message: 'Create a new book'}, status: 201
+      else
+        render :json => @book.errors, status: 500
+      end
     end
-    #
-    # if @book.save
-    # #   render :json =>{'msg'=>'book saved!'},status: :created
-    # # else
-    # #   render :json => @book.errors,status: :conflict
-    # end
-    # # render :json => { message: 'invalid params'}, status: 201
   end
 
 
@@ -33,16 +24,21 @@ class BooksController < ApplicationController
   #   render :json =>{'msg'=>'Book not found','code'=>'404'} , :status => 404
   # end
 
-  # # Never trust parameters from the scary internet, only allow the white list through.
-  # def book_params
-  #   params.require(:book).permit(:name, :isbn, :author, :price, :img_url, :description)
-  # end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def post_params
+    params.permit(:name, :author, :isbn, :price, :img_url, :description)
+  end
 
-  # def check_logged_in
-  #   authenticate_or_request_with_http_basic('Books') do |username,password|
-  #     username == 'admin' && password =='tw666'
-  #   end
-  # end
-  #{book=>{name:hda,price:dhaj}}
+# def put_params
+#   params.permit(:price,:img_url,:description)
+# end
+
+
+# def check_logged_in
+#   authenticate_or_request_with_http_basic('Books') do |username,password|
+#     username == 'admin' && password =='tw666'
+#   end
+# end
+#{book=>{name:hda,price:dhaj}}
 
 end
