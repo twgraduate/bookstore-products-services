@@ -1,44 +1,59 @@
 class BooksController < ApplicationController
 
-#   before_action :check_logged_in, only: [:edit, :update, :destroy]
-#   before_action :set_book, only: [:show, :edit, :update, :destroy]
+  before_action :check_logged_in, only: [:create, :update]
+
+  before_action :set_book, only: [:update]
+
+  def index
+    @books=Book.all
+    render :json => @books
+  end
 
 
   def create
-    begin
-      @book = Book.new(post_params)
-      if BooksHelper.add(@book)
-        render :json => {message: 'Create a new book'}, status: 201
-      else
-        render :json => @book.errors, status: 500
-      end
+    @book = Book.new(post_params)
+    if BooksHelper.save(@book)
+      render :json => {'msg': 'Create a new book','code': '201'}, status: 201
+    else
+      render :json => {'msg':"#{@book.errors.values.join("; ")}",'code':'409'}, status: 409
     end
   end
 
 
-  private
-  # # Use callbacks to share common setup or constraints between actions.
-  # def set_book
-  #   @book = Book.find_by_isbn(params[:isbn])
-  # rescue ActiveRecord::RecordNotFound
-  #   render :json =>{'msg'=>'Book not found','code'=>'404'} , :status => 404
-  # end
+  def update
+    if @book = @book.update(put_params)
+      render :json => {'msg': 'Book updated','code': '202'}, status: 202
+    else
+      render :json => @book.errors, status: 409
+    end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
-  def post_params
-    params.permit(:name, :author, :isbn, :price, :img_url, :description)
   end
 
-# def put_params
-#   params.permit(:price,:img_url,:description)
-# end
 
+  private
 
-# def check_logged_in
-#   authenticate_or_request_with_http_basic('Books') do |username,password|
-#     username == 'admin' && password =='tw666'
-#   end
-# end
+    def set_book
+      @book = Book.find_by_isbn(params[:isbn])
+    rescue ActiveRecord::RecordNotFound
+      render :json =>{'msg':'Book not found','code':'404'} , :status => 404
+    end
+
+    def post_params
+      params.permit(:name, :author, :isbn, :price, :img_url, :description)
+    end
+
+    def put_params
+      params.permit(:price,:img_url,:description)
+    end
+
+    def check_logged_in
+      authenticate_or_request_with_http_basic('Books',message = {"msg"=>"username or password is error",'code':"401"}.to_json) do |username,password|
+        username == 'admin' && password =='tw666'
+    end
+
+    end
+    #
+
 #{book=>{name:hda,price:dhaj}}
 
 end

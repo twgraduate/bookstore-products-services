@@ -1,6 +1,6 @@
 module BooksHelper
 
-  def self.add(book)
+  def self.save(book)
     book.save
   end
 end

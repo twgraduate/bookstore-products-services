@@ -1,6 +1,22 @@
 class Book < ApplicationRecord
 
-#stastic rules
+# #stastic rules
+#   validate :book_validation
+#
+#   private
+#   def book_validation
+#     if name == nil
+#       errors[:base] << "Name can not be empty"
+#     elsif author ==nil
+#       errors[:base] << "Author can not be empty"
+#     elsif isbn == nil
+#       errors[:base] << "Isbn can not be empty"
+#
+#
+#
+#     end
+#   end
+
   validates :author, :presence => {:message => "Author can't be empty" }
 
   validates :name, :uniqueness => {:scope =>:author, :message => "Name&&author of two books can't be the same at the same time"},
