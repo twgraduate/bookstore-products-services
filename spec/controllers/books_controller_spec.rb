@@ -2,36 +2,41 @@ require 'rails_helper'
 
 describe BooksController do
 
-  describe "GET#index" do
-    it 'GET the book list' do
-      allow(Book).to receive (:all)
-      get :index
-      expect(response.status).to eql 200
-    end
-  end
+  # describe "GET#index" do
+  #   it 'GET the book list' do
+  #     allow(Book).to receive (:all)
+  #     get :index
+  #     expect(response.status).to eql 200
+  #   end
+  # end
 
   describe "POST #create" do
     let(:add_book_successful) { "Create a new book" }
     it 'returns Create a new book successfukl message and 201 response code when post successful' do
-      allow(Book).to receive(:check_logged_in)
       allow(Book).to receive(:new)
       allow(BooksHelper).to receive(:save).and_return(true)
+      request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials 'admin', 'tw666'
       post :create
       expect(response.body).to include add_book_successful
       expect(response.status).to eql 201
     end
     it 'returns 409 error code when params is invalid' do
       @book = Book.new
-      allow(Book).to receive(:check_logged_in)
       allow(Book).to receive(:new).and_return(@book)
       allow(BooksHelper).to receive(:save).and_return(false)
+      request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials 'admin', 'tw666'
       post :create
       expect(response.status).to eql 409
     end
     it 'return 401 error code when username or password is error' do
-
+      request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials 'admin', 'tw6661'
+      post :create
+      expect(response.body).to include{"username or password is error"}
+      expect(response.status).to eql 401
     end
   end
+
+
 
   # describe "PUT #update" do
   #   it 'returns Book updated message and 202 response code when'
