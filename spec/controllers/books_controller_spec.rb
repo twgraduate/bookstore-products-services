@@ -2,13 +2,13 @@ require 'rails_helper'
 
 describe BooksController do
 
-  # describe "GET#index" do
-  #   it 'GET the book list' do
-  #     allow(Book).to receive (:all)
-  #     get :index
-  #     expect(response.status).to eql 200
-  #   end
-  # end
+  describe "GET#index" do
+    it 'GET the book list' do
+      allow(Book).to receive (:all)
+      get :index
+      expect(response.status).to eql 200
+    end
+  end
 
   describe "POST #create" do
     let(:add_book_successful) { "Create a new book" }
@@ -34,7 +34,17 @@ describe BooksController do
       expect(response.body).to include{"username or password is error"}
       expect(response.status).to eql 401
     end
+    it 'filter the illegal params by post_params'do
+      request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials 'admin', 'tw666'
+      allow(BooksHelper).to receive(:save).and_return(true)
+      Book.should_receive(:new).and_return({"name"=>"AlanD", "author"=>"iug", "isbn"=>"fhjak"}.with_indifferent_access)
+      post :create,
+           { first_name: 'Sideshow', last_name: 'Bob', name: 'AlanD',isbn:'fhjak',author:'iug' }
+    end
+
   end
+
+
 
 
 
