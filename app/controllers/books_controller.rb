@@ -1,8 +1,8 @@
 class BooksController < ApplicationController
 
-  before_action :check_logged_in, only: [:create, :update,:delete]
-  before_action :set_book, only: [:update, :show,:delete]
-  #
+  before_action :check_logged_in, only: [:create, :update, :delete]
+  before_action :set_book, only: [:update, :show, :delete]
+
   def create
     @book = Book.new(post_params)
     if BooksHelper.save(@book)
@@ -28,7 +28,7 @@ class BooksController < ApplicationController
 
   def delete
     @book.destroy
-    render :json => {'msg':'Book delete succeed!','code':'200'}, :status => 200
+    render :json => {'msg': 'Book delete succeed!', 'code': '200'}, :status => 200
   end
 
 
@@ -39,13 +39,12 @@ class BooksController < ApplicationController
     if @book == nil
       render :json => {'msg': 'Book not found', 'code': '404'}, :status => 404
     end
-
   end
 
   def post_params
     params.permit(:name, :author, :isbn, :price, :img_url, :description)
   end
-  #
+
   def put_params
     params.permit(:price, :img_url, :description)
   end
