@@ -12,6 +12,13 @@ describe BooksController do
     it "routes to #update" do
       expect(:put =>'/books/:isbn').to route_to(:controller => 'books', :action=>'update',:isbn=>':isbn')
     end
+    it "routes to show" do
+      expect(:get =>'/books/:isbn').to route_to(:controller => 'books', :action=>'show',:isbn=>':isbn')
+    end
+
+    it "routes to delete" do
+      expect(:delete => '/books/:isbn').to route_to(:controller => 'books', :action=>'delete',:isbn=>':isbn')
+    end
 
   end
 end

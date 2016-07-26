@@ -12,17 +12,18 @@
 
 ActiveRecord::Schema.define(version: 20160713064509) do
 
-  create_table "books", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "name"
-    t.string  "isbn"
-    t.string   "author"
-    t.decimal  "price",                     precision: 10
-    t.string   "img_url"
-    t.text     "description", limit: 65535
+  create_table "books" do |t|
+    t.string  "name"
+    t.string  "isbn" , null:false
+    t.string  "author"
+    t.decimal "price",                     precision: 10
+    t.string  "img_url"
+    t.text    "description", limit: 65535
   end
+  add_index "books", ["isbn"], unique: true
 
   create_table "versions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "vernum"
+    t.string "vernum"
   end
 
 end
