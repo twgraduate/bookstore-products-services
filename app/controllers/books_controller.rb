@@ -5,10 +5,10 @@ class BooksController < ApplicationController
 
   def create
     @book = Book.new(post_params)
-    if BooksHelper.save(@book)
-      render :json => {'msg': 'Create a new book', 'code': '201'}, status: 201
+    if @book.save(@book)
+      render :json => {'msg': 'Create a new book'}, status: 201
     else
-      render :json => {'msg': "#{@book.errors.values.join("; ")}", 'code': '409'}, status: 409
+      render :json => {'msg': "#{@book.errors.values.join("; ")}"}, status: 409
     end
   end
 
@@ -23,12 +23,12 @@ class BooksController < ApplicationController
 
   def update
     @book.update(put_params)
-    render :json => {'msg': 'Book updated!', 'code': '202'}, status: 202
+    render :json => {'msg': 'Book updated!'}, status: 202
   end
 
   def delete
     @book.destroy
-    render :json => {'msg': 'Book delete succeed!', 'code': '200'}, :status => 200
+    render :json => {'msg': 'Book delete succeed!'}, :status => 200
   end
 
 
@@ -37,7 +37,7 @@ class BooksController < ApplicationController
   def set_book
     @book = Book.select("name,isbn,author,price,img_url,description").find_by_isbn(params[:isbn])
     if @book == nil
-      render :json => {'msg': 'Book not found', 'code': '404'}, :status => 404
+      render :json => {'msg': 'Book not found'}, :status => 404
     end
   end
 
@@ -50,7 +50,7 @@ class BooksController < ApplicationController
   end
 
   def check_logged_in
-    authenticate_or_request_with_http_basic('Books', message = {"msg" => "username or password is error", 'code': "401"}.to_json) do |username, password|
+    authenticate_or_request_with_http_basic('Books', message = {"msg": "username or password is error"}.to_json) do |username, password|
       username == 'admin' && password =='tw666'
     end
 
