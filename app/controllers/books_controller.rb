@@ -5,7 +5,7 @@ class BooksController < ApplicationController
 
   def create
     @book = Book.new(post_params)
-    if @book.save(@book)
+    if @book.save
       render :json => {'msg': 'Create a new book'}, status: 201
     else
       render :json => {'msg': "#{@book.errors.values.join("; ")}"}, status: 409

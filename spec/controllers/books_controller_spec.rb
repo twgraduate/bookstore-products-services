@@ -5,7 +5,6 @@ describe BooksController do
   describe 'check_log_in' do
     before(:each) do
       request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials 'admin', 'tw6661'
-      @book = create(:book)
     end
 
     it 'return login error 401 when POST#create wrong login msg' do
@@ -75,7 +74,7 @@ describe BooksController do
       book_errors_values = double("book_errors_values")
       book_errors_message = "book_errors_message"
       allow(Book).to receive(:new).and_return(book)
-      allow(@book).to receive(:save).and_return(false)
+      allow(book).to receive(:save).and_return(false)
       allow(book).to receive(:errors).and_return(book_errors)
       allow(book_errors).to receive(:values).and_return(book_errors_values)
       allow(book_errors_values).to receive(:join).with("; ").and_return(book_errors_message)
@@ -85,14 +84,11 @@ describe BooksController do
     end
 
     it 'return increased message after filter when post succeed' do
-      allow(@book).to receive(:save).and_return(:true)
-      request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials 'admin', 'tw666'
-      Book.should_receive(:new).and_return({"name" => "AlanD", "author" => "iug", "isbn" => "fhjak"})
-      post :create, {:first_name => 'Sideshow', :last_name => 'Bob', :name => 'AlanD', :isbn => 'fhjak', :author => 'iug'}
-# #      expect{Book}.to receive(:new).and_return({"name" => "AlanD", "author" => "iug", "isbn" => "fhjak"})
-#      expect{@book}.to eq({name: 'AlanD', isbn: 'fhjak', author: 'iug'}.with_indifferent_access)
+      allow(@book).to receive(:save).and_return(true)
+      expect(Book).to receive(:new).with(hash_including("name" => "AlanD", "author" => "iug", "isbn" => "fhjak"))
+      post :create,
+           first_name: 'Sideshow', last_name: 'Bob', name: 'AlanD', isbn: 'fhjak', author: 'iug'
     end
-
 
   end
 
@@ -137,14 +133,7 @@ describe BooksController do
   describe "PUT #update" do
     before(:each) do
       request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials 'admin', 'tw666'
-      @book = create(:book)
-    end
-
-    it 'return the updated information when put params' do
-      put :update, {isbn: @book, :name => 'New name', :img_url => 'New url'}
-      @book.reload
-      expect(@book.name).to eq ('A name')
-      expect(@book.img_url).to eq ('New url')
+      @book = create(:book, name: 'A name', isbn: 'ga', author: 'An author', price: 13, img_url: 'An url', description:  'A description')
     end
 
     it "returns Book updated and 202 code when update succeed" do
@@ -157,6 +146,16 @@ describe BooksController do
       expect(response.body).to include { "Book updated!" }
       expect(response.status).to eql 202
     end
+
+    it 'return the updated information when put params' do
+      put :update, {isbn: @book, :name => 'New name', :img_url => 'New url'}
+      @book.reload
+      expect(@book.name).to eq ('A name')
+      expect(@book.img_url).to eq ('New url')
+    end
+  end
+
+  decribe 'post_params' do
   end
 
 end
