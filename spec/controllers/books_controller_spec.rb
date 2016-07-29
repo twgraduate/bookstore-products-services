@@ -155,7 +155,4 @@ describe BooksController do
     end
   end
 
-  decribe 'post_params' do
-  end
-
 end
