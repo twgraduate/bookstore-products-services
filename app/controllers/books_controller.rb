@@ -23,6 +23,7 @@ class BooksController < ApplicationController
 
   def update
     @book.update(put_params)
+    # render :json  => @book
     render :json => {'msg': 'Book updated!'}, status: 202
   end
 
@@ -30,7 +31,6 @@ class BooksController < ApplicationController
     @book.destroy
     render :json => {'msg': 'Book delete succeed!'}, :status => 200
   end
-
 
   private
 

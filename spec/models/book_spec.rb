@@ -1,6 +1,11 @@
 require 'rails_helper'
 
+
 describe Book do
+
+  before(:each) do
+    DatabaseCleaner.clean
+  end
 
   describe 'Validates' do
 
@@ -72,4 +77,5 @@ describe Book do
 
   end
 
+  DatabaseCleaner.clean
 end

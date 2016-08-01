@@ -1,9 +1,18 @@
 require 'rails_helper'
 
 describe BooksController do
+  before(:each) do
+    DatabaseCleaner.clean
+  end
 
   describe 'check_log_in' do
     before(:each) do
+      # allow(request.env['HTTP_AUTHORIZATION']).to receive(:authenticate!).and_throw(:warden, {:scope => :user})
+      # user = double(@user)
+      # request.env['warden'].stub :authenticate! => user
+      # allow(controller).to receive(:current_user) { user }
+      # user = double('user')
+      # allow(request.env['warden']).to receive(:authenticate!).and_return(user)
       request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials 'admin', 'tw6661'
     end
 
@@ -14,13 +23,15 @@ describe BooksController do
     end
 
     it 'return login error 401 when PUT#update wrong login msg' do
-      put :update, :isbn => :isbn
+      put :update,
+          params:{:isbn => :isbn}
       expect(response.body).to include ("username or password is error")
       expect(response.status).to eql 401
     end
 
     it 'return login error 401 when DELETE#delete wrong login msg' do
-      delete :delete, :isbn => :isbn
+      delete :delete,
+             params:{:isbn => :isbn}
       expect(response.body).to include ("username or password is error")
       expect(response.status).to eql 401
     end
@@ -36,19 +47,22 @@ describe BooksController do
     end
 
     it 'return 404 error when GET#show found no book' do
-      get :show, :isbn => :isbn
+      get :show,
+          params:{:isbn => :isbn}
       expect(response.body).to include('Book not found')
       expect(response.status).to eql 404
     end
 
     it 'return 404 error when PUT#update found no book' do
-      put :update, :isbn => :isbn
+      put :update,
+          params:{:isbn => :isbn}
       expect(response.body).to include('Book not found')
       expect(response.status).to eql 404
     end
 
     it 'return 404 error when DELETE#delete found no book' do
-      delete :delete, :isbn => :isbn
+      delete :delete,
+             params:{:isbn => :isbn}
       expect(response.body).to include('Book not found')
       expect(response.status).to eql 404
     end
@@ -61,7 +75,7 @@ describe BooksController do
     end
 
     it 'returns Create a new book successfukl message and 201 response code when post successful' do
-      allow(Book).to receive(:new)
+      allow(Book).to receive(:new).and_return(@book)
       allow(@book).to receive(:save).and_return(true)
       post :create
       expect(response.body).to include ('Create a new book')
@@ -87,7 +101,7 @@ describe BooksController do
       allow(@book).to receive(:save).and_return(true)
       expect(Book).to receive(:new).with(hash_including("name" => "AlanD", "author" => "iug", "isbn" => "fhjak"))
       post :create,
-           first_name: 'Sideshow', last_name: 'Bob', name: 'AlanD', isbn: 'fhjak', author: 'iug'
+           params:{first_name: 'Sideshow', last_name: 'Bob', name: 'AlanD', isbn: 'fhjak', author: 'iug'}
     end
 
   end
@@ -111,7 +125,8 @@ describe BooksController do
       allow(Book).to receive(:select).and_return(selected_information)
       allow(selected_information).to receive(:find_by_isbn).and_return(book_information)
       allow(book_information).to receive(:destroy)
-      delete :delete, :isbn => :isbn
+      delete :delete,
+             params:{:isbn => :isbn}
       expect(response.body).to include("Book delete succeed!")
       expect(response.status).to eql 200
     end
@@ -124,7 +139,8 @@ describe BooksController do
       selected_information = double('selected_information')
       allow(Book).to receive(:select).and_return(selected_information)
       allow(selected_information).to receive(:find_by_isbn).and_return('book information')
-      get :show, {isbn: selected_information}
+      get :show,
+          params:{isbn: selected_information}
       expect(response.body).to include('book information')
       expect(response.status).to eql 200
     end
@@ -142,17 +158,22 @@ describe BooksController do
       allow(Book).to receive(:select).and_return(selected_information)
       allow(selected_information).to receive(:find_by_isbn).and_return(book_information)
       allow(book_information).to receive(:update).and_return(:true)
-      put :update, :isbn => :isbn
+      put :update,
+          params:{:isbn => :isbn}
       expect(response.body).to include { "Book updated!" }
       expect(response.status).to eql 202
     end
 
     it 'return the updated information when put params' do
-      put :update, {isbn: @book, :name => 'New name', :img_url => 'New url'}
+      put :update,
+          params:{isbn: @book, :name => 'New name', :img_url => 'New url'}
       @book.reload
       expect(@book.name).to eq ('A name')
       expect(@book.img_url).to eq ('New url')
     end
   end
 
+  DatabaseCleaner.clean
 end
+
+
