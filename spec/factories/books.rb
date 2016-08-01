@@ -10,5 +10,3 @@ FactoryGirl.define do
     # description  'A description'             #{Faker::Description.description}
   end
 end
-
-#name: 'A name', isbn: 'ga', author: 'An author', price: 13, img_url: 'An url', description:  'A description'

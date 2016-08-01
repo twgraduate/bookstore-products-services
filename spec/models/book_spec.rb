@@ -76,6 +76,4 @@ describe Book do
     end
 
   end
-
-  DatabaseCleaner.clean
 end

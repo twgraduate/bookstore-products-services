@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 describe BooksController do
+
   before(:each) do
     DatabaseCleaner.clean
   end

@@ -20,7 +20,6 @@ require 'simplecov'
 SimpleCov.start
 require 'factory_girl_rails'
 require 'database_cleaner'
-# require 'rspec/json_expectations'
 
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
