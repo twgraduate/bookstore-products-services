@@ -27,12 +27,12 @@ describe Book do
         expect(book.errors[:name]).to eq(['Name can not be empty'])
       end
 
-      it 'returns Name&&author of two books can not be all the same' do
+      it 'returns Name and author of two books can not be all the same' do
         create(:book, name: 'rhh', isbn: 'ga', author: 'An author', price: 13, img_url: 'An url', description: 'A description')
         book=build(:book, name: 'rhh', isbn: 'newga', author: 'An author', price: 23, img_url: 'new url', description: 'new description')
         book.valid?
         expect(book.errors.size).to eq 1
-        expect(book.errors[:name]).to eq(['Name&&author of two books can not be all the same'])
+        expect(book.errors[:name]).to eq(['Name and author can not be same at same time'])
       end
     end
 

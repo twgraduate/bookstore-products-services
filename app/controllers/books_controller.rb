@@ -8,7 +8,7 @@ class BooksController < ApplicationController
     if @book.save
       render :json => {'msg': 'Create a new book'}, status: 201
     else
-      render :json => {'msg': "#{@book.errors.values.join("; ")}"}, status: 409
+      render :json => {'msg': "#{@book.errors.values.join("; ")}"}, status: 400
     end
   end
 

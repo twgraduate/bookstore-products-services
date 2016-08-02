@@ -21,18 +21,69 @@ RSpec.describe "Books", type: :request do
       expect(response.status).to eql 401
     end
 
-    it 'reject the params when data is invalidate' do
+    it 'reject the params when name is empty' do
       post '/books',
            params:{isbn: 'isbn1', author: 'author1', price: 1, img_url: 'Url1', description:  'Description1'},
            env:accurate_login_msg
       expect(response.body).to include ('Name can not be empty')
-      expect(response.status).to eql 409
+      expect(response.status).to eql 400
+      expect(response.content_type).to eq("application/json")
+    end
+
+    it 'reject the params when isbn is empty' do
+      post '/books',
+           params:{name:'name1', author: 'author1', price: 1, img_url: 'Url1', description:  'Description1'},
+           env:accurate_login_msg
+      expect(response.body).to include ('Isbn can not be empty')
+      expect(response.status).to eql 400
+      expect(response.content_type).to eq("application/json")
+    end
+
+    it 'reject the params when author is empty' do
+      post '/books',
+           params:{name:'name1', isbn:'isbn1', price: 1, img_url: 'Url1', description:  'Description1'},
+           env:accurate_login_msg
+      expect(response.body).to include ('Author can not be empty')
+      expect(response.status).to eql 400
+      expect(response.content_type).to eq("application/json")
+    end
+
+    it 'reject the params when price is not a number' do
+      post '/books',
+           params:{name:'name1', isbn:'isbn1',author:'author1', price: '1w', img_url: 'Url1', description:  'Description1'},
+           env:accurate_login_msg
+      expect(response.body).to include ('Price should be a number')
+      expect(response.status).to eql 400
+      expect(response.content_type).to eq("application/json")
+    end
+
+    it 'reject the params when isbn is conflict' do
+      post '/books',
+           params:book2,
+           env:accurate_login_msg
+      post '/books',
+           params:{name:'name1', isbn:'isbn2',author:'author1', price: 1, img_url: 'Url1', description:  'Description1'},
+           env:accurate_login_msg
+      expect(response.body).to include ('Isbn should be unique')
+      expect(response.status).to eql 400
+      expect(response.content_type).to eq("application/json")
+    end
+
+    it 'reject the params when name&&author is all the same' do
+      post '/books',
+           params:book2,
+           env:accurate_login_msg
+      post '/books',
+           params:{name:'name2', isbn:'isbn1',author:'author2', price: 1, img_url: 'Url1', description:  'Description1'},
+           env:accurate_login_msg
+      expect(response.body).to include ('Name and author can not be same at same time')
+      expect(response.status).to eql 400
       expect(response.content_type).to eq("application/json")
     end
 
     it 'post the data into the sql when data is validate' do
       post '/books',
-           params:book1,
+           params:book2,
            env:accurate_login_msg
       expect(response.body).to include ('Create a new book')
       expect(response.status).to eql 201
