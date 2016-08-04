@@ -23,7 +23,6 @@ class BooksController < ApplicationController
 
   def update
     @book.update(put_params)
-    # render :json  => @book
     render :json => {'msg': 'Book updated!'}, status: 202
   end
 

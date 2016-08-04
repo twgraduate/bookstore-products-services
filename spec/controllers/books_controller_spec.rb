@@ -9,9 +9,6 @@ describe BooksController do
   describe 'check_log_in' do
     before(:each) do
       allow(request.env['HTTP_AUTHORIZATION']).to receive(:authenticate!).and_throw(:warden, {:scope => :user})
-      # allow(controller).to receive(:current_user) { user }
-      # user = double('user')
-      #  request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials 'admin', 'tw6661'
     end
 
     it 'return login error 401 when POST#create wrong login msg' do
