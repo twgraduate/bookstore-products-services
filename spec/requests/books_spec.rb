@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Books", type: :request do
+RSpec.describe 'Books', type: :request do
 
   let(:book1) { {name: 'name1', isbn: 'isbn1', author: 'author1', price: 1, img_url: 'Url1', description: 'Description1'} }
   let(:book2) { {name: 'name2', isbn: 'isbn2', author: 'author2', price: 2, img_url: 'Url2', description: 'Description2'} }
@@ -17,7 +17,7 @@ RSpec.describe "Books", type: :request do
       post '/books',
            params: book1,
            env: error_login_msg
-      expect(response.body).to include ("username or password is error")
+      expect(response.body).to include('username or password is error')
       expect(response.status).to eql 401
     end
 
@@ -25,9 +25,9 @@ RSpec.describe "Books", type: :request do
       post '/books',
            params: {isbn: 'isbn1', author: 'author1', price: 1, img_url: 'Url1', description: 'Description1'},
            env: accurate_login_msg
-      expect(response.body).to include ('Name can not be empty')
+      expect(response.body).to include('Name can not be empty')
       expect(response.status).to eql 400
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq('application/json')
     end
 
     it 'reject the params when isbn is empty' do
@@ -36,7 +36,7 @@ RSpec.describe "Books", type: :request do
            env: accurate_login_msg
       expect(response.body).to include ('Isbn can not be empty')
       expect(response.status).to eql 400
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq('application/json')
     end
 
     it 'reject the params when author is empty' do
@@ -45,7 +45,7 @@ RSpec.describe "Books", type: :request do
            env: accurate_login_msg
       expect(response.body).to include ('Author can not be empty')
       expect(response.status).to eql 400
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq('application/json')
     end
 
     it 'reject the params when price is not a number' do
@@ -54,7 +54,7 @@ RSpec.describe "Books", type: :request do
            env: accurate_login_msg
       expect(response.body).to include ('Price should be a number')
       expect(response.status).to eql 400
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq('application/json')
     end
 
     it 'reject the params when isbn is conflict' do
@@ -66,7 +66,7 @@ RSpec.describe "Books", type: :request do
            env: accurate_login_msg
       expect(response.body).to include ('Isbn should be unique')
       expect(response.status).to eql 400
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq('application/json')
     end
 
     it 'reject the params when name&&author is all the same' do
@@ -78,7 +78,7 @@ RSpec.describe "Books", type: :request do
            env: accurate_login_msg
       expect(response.body).to include ('Name and author can not be same at same time')
       expect(response.status).to eql 400
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq('application/json')
     end
 
     it 'post the data into the sql when data is validate' do
@@ -87,7 +87,7 @@ RSpec.describe "Books", type: :request do
            env: accurate_login_msg
       expect(response.body).to include ('Create a new book')
       expect(response.status).to eql 200
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq('application/json')
     end
 
   end
@@ -102,7 +102,7 @@ RSpec.describe "Books", type: :request do
            env: accurate_login_msg
       get '/books',
           env: accurate_login_msg
-      expect(response.content_type).to eq("application/json")
+      expect(response.content_type).to eq('application/json')
       expect(response.body).to eq [book1, book2].to_json
     end
   end
@@ -132,7 +132,7 @@ RSpec.describe "Books", type: :request do
       put '/books/isbn1',
           params: book1,
           env: error_login_msg
-      expect(response.body).to include ("username or password is error")
+      expect(response.body).to include ('username or password is error')
       expect(response.status).to eql 401
     end
 
@@ -165,7 +165,7 @@ RSpec.describe "Books", type: :request do
     it 'return login error 401 when DELETE#delete with wrong login msg' do
       delete '/books/isbnnil',
              env: error_login_msg
-      expect(response.body).to include ("username or password is error")
+      expect(response.body).to include ('username or password is error')
       expect(response.status).to eql 401
     end
 

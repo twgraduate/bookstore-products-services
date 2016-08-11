@@ -72,7 +72,7 @@ describe Book do
 
     it 'can be recorded when params are legal' do
       book=create(:book, name: 'rhh', isbn: 'ga', author: 'An author', price: 13, img_url: 'An url', description: 'A description')
-      expect(Book.find('ga')).to eq book
+      expect(Book.find_by_isbn('ga')).to eq book
     end
   end
 end

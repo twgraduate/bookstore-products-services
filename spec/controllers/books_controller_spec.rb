@@ -27,7 +27,7 @@ describe BooksController do
     it 'return login error 401 when DELETE#delete wrong login msg' do
       delete :delete,
              params: {:isbn => :isbn}
-      expect(response.body).to include ("username or password is error")
+      expect(response.body).to include ('username or password is error')
       expect(response.status).to eql 401
     end
 
@@ -63,7 +63,7 @@ describe BooksController do
     end
   end
 
-  describe "POST #create" do
+  describe 'POST #create' do
 
     before(:each) do
       request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials 'admin', 'tw666'
@@ -78,30 +78,30 @@ describe BooksController do
     end
 
     it 'returns 409 error code when params is invalid' do
-      book = double("book")
-      book_errors = double("book_errors")
-      book_errors_values = double("book_errors_values")
-      book_errors_message = "book_errors_message"
+      book = double('book')
+      book_errors = double('book_errors')
+      book_errors_values = double('book_errors_values')
+      book_errors_message = 'book_errors_message'
       allow(Book).to receive(:new).and_return(book)
       allow(book).to receive(:save).and_return(false)
       allow(book).to receive(:errors).and_return(book_errors)
       allow(book_errors).to receive(:values).and_return(book_errors_values)
-      allow(book_errors_values).to receive(:join).with("; ").and_return(book_errors_message)
+      allow(book_errors_values).to receive(:join).with('; ').and_return(book_errors_message)
       post :create
-      expect(response.body).to include ("book_errors_message")
+      expect(response.body).to include ('book_errors_message')
       expect(response.status).to eql 400
     end
 
     it 'return increased message after filter when post succeed' do
       allow(@book).to receive(:save).and_return(true)
-      expect(Book).to receive(:new).with(hash_including("name" => "AlanD", "author" => "iug", "isbn" => "fhjak"))
+      expect(Book).to receive(:new).with(hash_including('name' => 'AlanD', 'author' => 'iug', 'isbn' => 'fhjak'))
       post :create,
            params: {first_name: 'Sideshow', last_name: 'Bob', name: 'AlanD', isbn: 'fhjak', author: 'iug'}
     end
 
   end
 
-  describe "GET#index" do
+  describe 'GET#index' do
 
     it 'return the book list when get the index' do
       allow(Book).to receive(:select).and_return('book list information')
@@ -112,7 +112,7 @@ describe BooksController do
 
   end
 
-  describe "DELETE #delete" do
+  describe 'DELETE #delete' do
     it 'return Book delete succeed and 200 code when delete succeed' do
       request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials 'admin', 'tw666'
       selected_information = double('selected_information')
@@ -122,12 +122,12 @@ describe BooksController do
       allow(book_information).to receive(:destroy)
       delete :delete,
              params: {:isbn => :isbn}
-      expect(response.body).to include("Book delete succeed!")
+      expect(response.body).to include('Book delete succeed!')
       expect(response.status).to eql 200
     end
   end
 
-  describe "GET#show" do
+  describe 'GET#show' do
 
     it 'returns book[:isbn] detail message when show it' do
       request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials 'admin', 'tw666'
@@ -141,7 +141,7 @@ describe BooksController do
     end
   end
 
-  describe "PUT #update" do
+  describe 'PUT #update' do
     before(:each) do
       request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials 'admin', 'tw666'
       @book = create(:book, name: 'A name', isbn: 'ga', author: 'An author', price: 13, img_url: 'An url', description: 'A description')

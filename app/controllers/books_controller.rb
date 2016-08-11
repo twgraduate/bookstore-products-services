@@ -13,7 +13,7 @@ class BooksController < ApplicationController
   end
 
   def index
-    @books=Book.select("name,isbn,author,price,img_url,description")
+    @books=Book.select('name,isbn,author,price,img_url,description')
     render :json => @books
   end
 
@@ -49,7 +49,7 @@ class BooksController < ApplicationController
   end
 
   def check_logged_in
-    authenticate_or_request_with_http_basic('Books', message = {"msg": "username or password is error"}.to_json) do |username, password|
+    authenticate_or_request_with_http_basic('Books', message = {'msg': 'username or password is error'}.to_json) do |username, password|
       username == 'admin' && password =='tw666'
     end
 

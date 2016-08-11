@@ -35,7 +35,7 @@ group :development, :test do
   gem 'byebug', platform: :mri
   gem 'rspec-rails', '~> 3.4'
   gem 'database_cleaner', :require => false
-  gem "factory_girl_rails", "~> 4.0", :require => false
+  gem 'factory_girl_rails', '~> 4.0', :require => false
   gem 'simplecov', :require => false
 end
 
