@@ -13,14 +13,14 @@ describe BooksController do
 
     it 'return login error 401 when POST#create wrong login msg' do
       post :create
-      expect(response.body).to include ("username or password is error")
+      expect(response.body).to include('username or password is error')
       expect(response.status).to eql 401
     end
 
     it 'return login error 401 when PUT#update wrong login msg' do
       put :update,
           params: {:isbn => :isbn}
-      expect(response.body).to include ("username or password is error")
+      expect(response.body).to include('username or password is error')
       expect(response.status).to eql 401
     end
 
@@ -69,12 +69,12 @@ describe BooksController do
       request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials 'admin', 'tw666'
     end
 
-    it 'returns Create a new book successfukl message and 201 response code when post successful' do
+    it 'returns Create a new book successfukl message and 200 response code when post successful' do
       allow(Book).to receive(:new).and_return(@book)
       allow(@book).to receive(:save).and_return(true)
       post :create
       expect(response.body).to include ('Create a new book')
-      expect(response.status).to eql 201
+      expect(response.status).to eql 200
     end
 
     it 'returns 409 error code when params is invalid' do
@@ -147,7 +147,7 @@ describe BooksController do
       @book = create(:book, name: 'A name', isbn: 'ga', author: 'An author', price: 13, img_url: 'An url', description: 'A description')
     end
 
-    it "returns Book updated and 202 code when update succeed" do
+    it 'returns Book updated and 200 code when update succeed' do
       selected_information = double('selected_information')
       book_information = double('book_information')
       allow(Book).to receive(:select).and_return(selected_information)
@@ -155,16 +155,16 @@ describe BooksController do
       allow(book_information).to receive(:update).and_return(:true)
       put :update,
           params: {:isbn => :isbn}
-      expect(response.body).to include { "Book updated!" }
-      expect(response.status).to eql 202
+      expect(response.body).to include('Book updated!')
+      expect(response.status).to eql 200
     end
 
     it 'return the updated information when put params' do
       put :update,
           params: {isbn: @book, :name => 'New name', :img_url => 'New url'}
       @book.reload
-      expect(@book.name).to eq ('A name')
-      expect(@book.img_url).to eq ('New url')
+      expect(@book.name).to eq 'A name'
+      expect(@book.img_url).to eq 'New url'
     end
   end
 

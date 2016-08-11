@@ -86,7 +86,7 @@ RSpec.describe "Books", type: :request do
            params: book2,
            env: accurate_login_msg
       expect(response.body).to include ('Create a new book')
-      expect(response.status).to eql 201
+      expect(response.status).to eql 200
       expect(response.content_type).to eq("application/json")
     end
 
@@ -152,7 +152,7 @@ RSpec.describe "Books", type: :request do
           params: book2,
           env: accurate_login_msg
       expect(response.body).to include('Book updated')
-      expect(response.status).to eql 202
+      expect(response.status).to eql 200
       get '/books/isbn1',
           env: accurate_login_msg
       expect(response.body).to eq book3.to_json

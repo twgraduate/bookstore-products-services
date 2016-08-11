@@ -6,9 +6,9 @@ class BooksController < ApplicationController
   def create
     @book = Book.new(post_params)
     if @book.save
-      render :json => {'msg': 'Create a new book'}, status: 201
+      render :json => {'msg': 'Create a new book'}, status: 200
     else
-      render :json => {'msg': "#{@book.errors.values.join("; ")}"}, status: 400
+      render :json => {'msg': "#{@book.errors.values.join('; ')}"}, status: 400
     end
   end
 
@@ -23,7 +23,7 @@ class BooksController < ApplicationController
 
   def update
     @book.update(put_params)
-    render :json => {'msg': 'Book updated!'}, status: 202
+    render :json => {'msg': 'Book updated!'}, status: 200
   end
 
   def delete
@@ -34,7 +34,7 @@ class BooksController < ApplicationController
   private
 
   def set_book
-    @book = Book.select("name,isbn,author,price,img_url,description").find_by_isbn(params[:isbn])
+    @book = Book.select('name,isbn,author,price,img_url,description').find_by_isbn(params[:isbn])
     if @book == nil
       render :json => {'msg': 'Book not found'}, :status => 404
     end
